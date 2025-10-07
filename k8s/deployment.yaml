@@ -6,6 +6,7 @@ metadata:
     app: supermario
 spec:
   replicas: 2
+  progressDeadlineSeconds: 900
   selector:
     matchLabels:
       app: supermario
@@ -14,11 +15,13 @@ spec:
       labels:
         app: supermario
     spec:
+      imagePullSecrets:
+      - name: dockerhub-secret
       containers:
       - name: supermario
         image: octalcomputer/supermariogitopsproject:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           name: http
         resources:
           requests:
@@ -30,12 +33,16 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 80
-          initialDelaySeconds: 10
+            port: 8080
+          initialDelaySeconds: 30
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /
-            port: 80
-          initialDelaySeconds: 5
+            port: 8080
+          initialDelaySeconds: 15
           periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
