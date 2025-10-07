@@ -49,3 +49,15 @@ jobs:
             octalcomputer/supermariogitopsproject:${{ steps.version.outputs.VERSION }}
             octalcomputer/supermariogitopsproject:${{ steps.version.outputs.SHORT_SHA }}
             octalcomputer/supermariogitopsproject:latest
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: octalcomputer/supermariogitopsproject:${{ steps.version.outputs.VERSION }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
