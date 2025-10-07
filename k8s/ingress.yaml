@@ -5,17 +5,17 @@ metadata:
   annotations:
     # Use NGINX Ingress Controller
     kubernetes.io/ingress.class: nginx
-    # Enable cert-manager to automatically provision SSL certificate
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    # Redirect HTTP to HTTPS (disabled for /etc/hosts testing)
+    # Disable SSL redirect for testing
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     # Additional NGINX settings
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
 spec:
-  tls:
-  - hosts:
-    - supermario.yourdomain.com
-    secretName: supermario-tls
+  # TLS section commented out for /etc/hosts testing
+  # Uncomment when using real DNS
+  # tls:
+  # - hosts:
+  #   - supermario.yourdomain.com
+  #   secretName: supermario-tls
   rules:
   - host: supermario.yourdomain.com
     http:
